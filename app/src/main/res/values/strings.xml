@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">SecureTransfer</string>
+    <string name="Menu">Menu</string>
+    <string name="Send">Send File</string>
+    <string name="Create">Create a new User</string>
 </resources>

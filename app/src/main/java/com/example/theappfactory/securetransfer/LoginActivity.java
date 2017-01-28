@@ -38,12 +38,13 @@ public class LoginActivity extends AppCompatActivity {
     /** Called when the user clicks the Login button */
     public void loginButtonClick(View view){
         Intent intent = new Intent(this, MenuActivity.class);
-        //String loginName = editTextName.getText().toString();
-        //UserObject.getUserObject().setUserName(loginName);
+        String loginName = "Bart Peeten";
+        UserObject.getUserObject().setUserName(loginName);
         startActivity(intent);
     }
 
-    public void cancelButtonClick(){
-        // TODO: need to be implemented.
+    public void createNewUserButtonClick(){
+        Intent createNewUserIntent = new Intent(this, CreateNewUserActivity.class);
+        startActivity(createNewUserIntent);
     }
 }

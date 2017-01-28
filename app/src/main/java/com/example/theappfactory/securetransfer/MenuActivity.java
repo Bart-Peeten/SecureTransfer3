@@ -12,11 +12,18 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        Button outboxButton = (Button)findViewById(R.id.outboxbutton);
+        outboxButton.setEnabled(false);
 
     }
 
     public void sendFileButtonClick(View view){
         Intent intent = new Intent(this, SendActivity.class);
         startActivity(intent);
+    }
+
+    public void backButtonClick(View view){
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginIntent);
     }
 }

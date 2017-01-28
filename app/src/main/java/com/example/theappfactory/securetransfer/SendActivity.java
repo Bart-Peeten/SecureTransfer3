@@ -13,11 +13,6 @@ public class SendActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send);
-
-        // Create instances of the buttons and textview
-        View sendTextView = findViewById(R.id.sendTextView);
-        View selectButton = findViewById(R.id.selectbutton);
-        View sendButton = findViewById(R.id.sendbutton);
     }
 
     public void selectButtonClick(View view) {
@@ -25,6 +20,11 @@ public class SendActivity extends AppCompatActivity {
         intent.putExtra("CONTENT_TYPE", "*/*");
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         startActivityForResult(intent, FILE_SELECT_CODE);
+    }
+
+    public void backToMenuButtonClick(View view){
+        Intent menuIntent = new Intent(this, MenuActivity.class);
+        startActivity(menuIntent);
     }
 
     // Method to get the path of the chosen file.

@@ -53,4 +53,15 @@
         android:layout_marginTop="31dp"
         android:layout_below="@+id/sendbutton"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/outboxbutton"
+        android:layout_alignRight="@+id/sendbutton"
+        android:layout_alignEnd="@+id/sendbutton"
+        android:layout_marginTop="25dp"
+        android:onClick="backButtonClick"
+        android:id="@+id/backButton" />
 </RelativeLayout>
