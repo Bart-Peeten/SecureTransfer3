@@ -13,12 +13,6 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        UserObject userobject = getIntent().getExtras().getParcelable(LoginActivity.EXTRA_MESSAGE);
-
-        // Create instances of the buttons.
-        View outboxButton = findViewById(R.id.outboxbutton);
-        View sendButton = findViewById(R.id.sendbutton);
-        View inboxButton = findViewById(R.id.inboxButton);
     }
 
     public void sendFileButtonClick(View view){

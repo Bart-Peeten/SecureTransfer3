@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.theappfactory.securetransfer.MESSAGE";
-    EditText editTextName = (EditText)findViewById(R.id.editText_Name);
+    //EditText editTextName = (EditText)findViewById(R.id.nameTextView);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     /** Called when the user clicks the Login button */
     public void loginButtonClick(View view){
         Intent intent = new Intent(this, MenuActivity.class);
-        String loginName = editTextName.getText().toString();
-        UserObject.getUserObject().setUserName(loginName);
+        //String loginName = editTextName.getText().toString();
+        //UserObject.getUserObject().setUserName(loginName);
         startActivity(intent);
     }
 

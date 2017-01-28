@@ -11,25 +11,7 @@
     android:background="@android:color/white"
     tools:context="com.example.theappfactory.securetransfer.LoginActivity">
 
-    <Button android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="Login"
-        android:background="@android:color/darker_gray"
-        android:onClick="loginButtonClick"/>
-
-    <Button android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="Create User"
-        android:background="@android:color/darker_gray"
-        android:onClick="cancelButtonClick"/>
-
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="145dp"
@@ -39,7 +21,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="53dp"
@@ -49,8 +31,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:text="TextView"
+    <EditText
+        android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/nameTextView"
@@ -62,8 +44,8 @@
         android:width="200dp"
         android:background="@android:color/darker_gray" />
 
-    <TextView
-        android:text="TextView"
+    <EditText
+        android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/passwordTetxView"
@@ -75,6 +57,28 @@
         android:height="30dp"
         android:width="200dp"
         android:background="@android:color/darker_gray" />
+
+    <Button android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create User"
+        android:background="@android:color/darker_gray"
+        android:onClick="cancelButtonClick"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="23dp" />
+
+    <Button android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:background="@android:color/darker_gray"
+        android:onClick="loginButtonClick"
+        android:layout_alignBaseline="@+id/cancelButton"
+        android:layout_alignBottom="@+id/cancelButton"
+        android:layout_alignRight="@+id/nameTextView"
+        android:layout_alignEnd="@+id/nameTextView" />
 
 
 </RelativeLayout>
