@@ -19,7 +19,6 @@ public class LoginActivity extends AppCompatActivity {
         /* Disable Login button if both fields are empty
         the addTextChangedListener needs to be implemented in order to disable or enable LoginButton
         if the textfields are filled in */
-        View cancelButton = findViewById(R.id.cancelButton);
         View loginButton = findViewById(R.id.loginButton);
         if (this.fieldsFilledIn()) {
             loginButton.setEnabled(true);
@@ -43,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void createNewUserButtonClick(){
+    public void createNewUserButtonClick(View view){
         Intent createNewUserIntent = new Intent(this, CreateNewUserActivity.class);
         startActivity(createNewUserIntent);
     }

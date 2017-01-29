@@ -14,7 +14,6 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         Button outboxButton = (Button)findViewById(R.id.outboxbutton);
         outboxButton.setEnabled(false);
-
     }
 
     public void sendFileButtonClick(View view){

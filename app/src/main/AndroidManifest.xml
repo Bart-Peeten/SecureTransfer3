@@ -20,7 +20,7 @@
         <activity android:name=".SendActivity"
                   android:label="@string/Send"/>
         <activity android:name=".CreateNewUserActivity"
-                  android:label="@string/Create"></activity>
+                  android:label="@string/Create"/>
     </application>
 
 </manifest>

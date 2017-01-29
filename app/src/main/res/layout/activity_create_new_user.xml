@@ -22,7 +22,6 @@
         android:layout_marginEnd="17dp"
         android:layout_marginTop="86dp"
         android:id="@+id/firstNameEditText"
-        android:height="80dp"
         android:background="@android:color/darker_gray" />
 
     <EditText
