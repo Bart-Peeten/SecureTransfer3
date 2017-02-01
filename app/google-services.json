@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "609391480202",
+    "firebase_url": "https://securetransfer-7f3d3.firebaseio.com",
+    "project_id": "securetransfer-7f3d3",
+    "storage_bucket": "securetransfer-7f3d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609391480202:android:3d17ef38c71ba40e",
+        "android_client_info": {
+          "package_name": "com.example.theappfactory.securetransfer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "609391480202-ds7cr5dd9hqkh0al73i2dfh9a4bh6a9m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVb4pu3uemgDhd67ZIaNdJ-s5aDMcTAsc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
