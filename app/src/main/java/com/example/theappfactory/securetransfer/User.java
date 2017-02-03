@@ -9,7 +9,10 @@ public class User {
     private String firstName;
     private String email;
     private String userName;
+    private int publicKey;
+    private int privateKey;
 
+    //Constructors
     public User() {
     }
 
@@ -18,6 +21,26 @@ public class User {
         this.firstName = firstName;
         this.email = email;
         this.userName = userName;
+        setPrivateKey(1);
+        setPublicKey(3);
+
+    }
+
+    // Getter and Setters.
+    public int getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(int publicKey) {
+        this.publicKey = publicKey;
+    }
+
+    public int getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(int privateKey) {
+        this.privateKey = privateKey;
     }
 
     public String getName() {

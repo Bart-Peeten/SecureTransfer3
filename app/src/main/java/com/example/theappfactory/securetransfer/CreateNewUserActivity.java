@@ -9,11 +9,8 @@ import android.widget.EditText;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
 
 public class CreateNewUserActivity extends AppCompatActivity {
     private EditText firstnameText;
@@ -25,18 +22,17 @@ public class CreateNewUserActivity extends AppCompatActivity {
     private String lastName;
     private String email;
     private String userName;
-    private long numberOfChilds;
+    private Database database;
 
     //private AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference rootRef = database.getReference();
-    private DatabaseReference userRef = rootRef.child("User");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_user);
+
+        // Create a database instance.
+        this.database = new Database();
 
         // Get UI Elements.
         firstnameText = (EditText)findViewById(R.id.firstNameEditText);
@@ -45,20 +41,19 @@ public class CreateNewUserActivity extends AppCompatActivity {
         usernameText = (EditText)findViewById(R.id.usernamerEditText);
 
         // Fill the database with the first Dummy user.
-        //uploadFirstTimeUser(database);
-
+        //database.uploadFirstTimeUser();
     }
 
     @Override
     protected void onStart(){
         super.onStart();
 
-        userRef.addValueEventListener(new ValueEventListener() {
+        database.getUserRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                numberOfChilds = dataSnapshot.getChildrenCount();
+                database.setNumberOfChilds(dataSnapshot.getChildrenCount());
                 Log.w("AMOUNT IS: ", String.valueOf(dataSnapshot.getChildrenCount()));
-
+                Log.w("NumberOfChilds is: ", String.valueOf(database.getNumberOfChilds()));
             }
 
             @Override
@@ -66,6 +61,7 @@ public class CreateNewUserActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     // If cancel button is clicked go back to login activity.
@@ -86,32 +82,10 @@ public class CreateNewUserActivity extends AppCompatActivity {
                 !lastName.equals("")  &&
                 !email.equals("")     &&
                 !userName.equals("")){
-            appendUserToExistingUserTree(userRef);
+            User user = new User(lastName, firstName, email, userName);
+            this.database.appendUserToExistingUserTree(user);
         }
 
         startActivity(loginWhenCreatedIntent);
-    }
-
-    /* appends the new User to the user node
-       firebase supplies the key - (getKey()) */
-    private void appendUserToExistingUserTree(DatabaseReference userReference){
-        String key = String.valueOf(numberOfChilds);
-        Log.w("The key is: ", key);
-        User user = new User(lastName, firstName, email, userName);
-
-        userReference.child(key).setValue(user);
-    }
-
-    /* This method will only called once to create the database structure.*/
-    private void uploadFirstTimeUser(FirebaseDatabase database){
-        String key = "0";
-        firstName = "Bart";
-        lastName = "Peeten";
-        email = "bart.peeten@gmail.com";
-        userName = "bpeeten";
-        User user = new User(lastName, firstName, email, userName);
-        HashMap<String, User> hashmap = new HashMap<>();
-        hashmap.put(key, user);
-        database.getReference("User").setValue(hashmap);
     }
 }
