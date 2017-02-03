@@ -41,7 +41,9 @@ public class Database {
         userRef.child(key).setValue(user);
     }
 
-    /* This method will only called once to create the database structure.*/
+    /* This method will only called once to create the database structure.
+        This method is not needed anymore, the databse is filled correctly
+        Like we do now. */
     public void uploadFirstTimeUser(){
         String key = "0";
         String firstName = "Bart";
