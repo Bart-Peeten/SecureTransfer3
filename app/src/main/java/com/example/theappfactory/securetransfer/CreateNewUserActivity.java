@@ -3,89 +3,67 @@ package com.example.theappfactory.securetransfer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class CreateNewUserActivity extends AppCompatActivity {
-    private EditText firstnameText;
-    private EditText lastnameText;
-    private EditText emailText;
-    private EditText usernameText;
-
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String userName;
-    private Database database;
-
-    //private AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+    public static final String EXTRA_MESSAGE = "com.example.theappfactory.securetransfer.MESSAGE";
+    private EditText signupEmailText;
+    private EditText sigupPaswordText;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_user);
 
-        // Create a database instance.
-        this.database = new Database();
+        // Get UI elements.
+        signupEmailText = (EditText) findViewById(R.id.signupemailtext);
+        sigupPaswordText = (EditText) findViewById(R.id.signuppaswordtext);
 
-        // Get UI Elements.
-        firstnameText = (EditText)findViewById(R.id.firstNameEditText);
-        lastnameText = (EditText)findViewById(R.id.NameEditText);
-        emailText = (EditText)findViewById(R.id.emailEditText);
-        usernameText = (EditText)findViewById(R.id.usernamerEditText);
-
-        // Fill the database with the first Dummy user.
-        //database.uploadFirstTimeUser();
-    }
-
-    @Override
-    protected void onStart(){
-        super.onStart();
-
-        database.getUserRef().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                database.setNumberOfChilds(dataSnapshot.getChildrenCount());
-                Log.w("AMOUNT IS: ", String.valueOf(dataSnapshot.getChildrenCount()));
-                Log.w("NumberOfChilds is: ", String.valueOf(database.getNumberOfChilds()));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        //Get Firebase auth instance
+        auth = FirebaseAuth.getInstance();
 
     }
 
-    // If cancel button is clicked go back to login activity.
-    public void cancelButtonClick(View view){
-        Intent loginIntent = new Intent(this, LoginActivity.class);
-        startActivity(loginIntent);
-    }
+    public void signUpButtonOnClick(View view){
+        String email = signupEmailText.getText().toString().trim();
+        String password = sigupPaswordText.getText().toString().trim();
 
-    public void createUserButtonClick(View view){
-        Intent loginWhenCreatedIntent = new Intent(this, LoginActivity.class);
-        // Check if all Edtitexts are filled in.
-        firstName = firstnameText.getText().toString();
-        lastName = lastnameText.getText().toString();
-        email = emailText.getText().toString();
-        userName = usernameText.getText().toString();
-
-        if (!firstName.equals("")     &&
-                !lastName.equals("")  &&
-                !email.equals("")     &&
-                !userName.equals("")){
-            User user = new User(lastName, firstName, email, userName);
-            this.database.appendUserToExistingUserTree(user);
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        startActivity(loginWhenCreatedIntent);
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.length() < 3) {
+            Toast.makeText(getApplicationContext(), "Password too short, enter minimum 3 characters!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    Toast.makeText(this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+
+                    // If sign in fails, display a message to the user. If sign in succeeds
+                    // the auth state listener will be notified and logic to handle the
+                    // signed in user can be handled in the listener.
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(this, "Authentication failed." + task.getException(),
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(new Intent(this, MenuActivity.class));
+                        finish();
+                    }
+                });
     }
 }

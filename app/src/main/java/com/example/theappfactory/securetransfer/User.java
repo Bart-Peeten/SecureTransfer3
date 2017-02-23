@@ -11,16 +11,19 @@ public class User {
     private String userName;
     private int publicKey;
     private int privateKey;
+    private String password;
 
     //Constructors
     public User() {
     }
 
-    public User(String name, String firstName, String email, String userName) {
+
+    public User(String name, String firstName, String email, String userName, String password) {
         this.name = name;
         this.firstName = firstName;
         this.email = email;
         this.userName = userName;
+        this.password = password;
         setPrivateKey(1);
         setPublicKey(3);
 
@@ -73,5 +76,14 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
