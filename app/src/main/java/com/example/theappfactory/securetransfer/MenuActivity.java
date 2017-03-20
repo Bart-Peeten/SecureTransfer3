@@ -6,11 +6,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-/* FireBase imports */
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
+
+/* FireBase imports */
 /* Own Imports */
-import Services.services.RSA.GenerateRSAKeys;
 
 
 /**
@@ -21,6 +31,10 @@ public class MenuActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private Button       inboxButton;
     private Database     database;
+    private PrivateKey   privateKeySender;
+    private PublicKey    publicKeySender;
+    private PrivateKey   privateKeyReceiver;
+    private PublicKey    publicKeyReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +50,46 @@ public class MenuActivity extends AppCompatActivity {
         this.inboxButton = (Button)findViewById(R.id.inboxButton);
         inboxButton.setText("INBOX: " + "0");
 
-        GenerateRSAKeys.CreateRSAKeys();
-        UserObject.privateKey = GenerateRSAKeys.getPrivateKey();
-        UserObject.publicKey = GenerateRSAKeys.getPublicKey();
+        generateSenderRSAKeys(publicKeySender, privateKeySender);
+        generateSenderRSAKeys(publicKeyReceiver, privateKeyReceiver);
+        writeSenderRSAKeyToFile(publicKeySender, privateKeySender, "/storage/emulated/0/Android/data/SenderRSAKey.txt");
+        writeSenderRSAKeyToFile(publicKeyReceiver, privateKeyReceiver, "/storage/emulated/0/Android/data/RecieverRSAKey.txt");
+
+
+    }
+
+    private void writeSenderRSAKeyToFile(PublicKey publicKey, PrivateKey privateKey, String filePath) {
+    /* save the public key in a file */
+        byte[] publicKeyEncodedkey = publicKey.getEncoded();
+        byte[] privateKeyEncodedkey = privateKey.getEncoded();
+        FileOutputStream keyfos = null;
+        try {
+            keyfos = new FileOutputStream(filePath);
+            keyfos.write(publicKeyEncodedkey);
+            keyfos.write(privateKeyEncodedkey);
+            keyfos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generateSenderRSAKeys(PublicKey publicKey, PrivateKey privateKey) {
+        try {
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
+            SecureRandom random = null;
+            random = SecureRandom.getInstance("SHA1PRNG", "SUN");
+            keyGen.initialize(1024, random);
+
+            KeyPair pair = keyGen.generateKeyPair();
+            privateKey = pair.getPrivate();
+            publicKey = pair.getPublic();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendFileButtonClick(View view){
