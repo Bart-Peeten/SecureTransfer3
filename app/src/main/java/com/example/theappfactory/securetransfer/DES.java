@@ -34,7 +34,7 @@ import static java.security.AccessController.getContext;
  *
  *  There is code which we got by watching youtube video's
  *  Also we searched the web to get knowledge about DES encryption in Java.
- *  There is code from many sites, so I will not mention them all
+ *  Since there is code from many sites, so I will not mention them all
  *  as there is not one whole specific part of one specific site.
  */
 
