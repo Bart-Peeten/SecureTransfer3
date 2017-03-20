@@ -9,13 +9,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class CreateNewUserActivity extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "com.example.theappfactory.securetransfer.MESSAGE";
     private EditText signupEmailText;
     private EditText sigupPaswordText;
     private FirebaseAuth auth;
+    private Database database;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,9 @@ public class CreateNewUserActivity extends AppCompatActivity {
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
+
+        //Create Database instance.
+        this.database = new Database();
 
     }
 
@@ -64,6 +69,12 @@ public class CreateNewUserActivity extends AppCompatActivity {
                         startActivity(new Intent(this, MenuActivity.class));
                         finish();
                     }
+
+
+                    FirebaseUser firebaseUser = task.getResult().getUser();
+                    String userId = firebaseUser.getUid();
+                    this.user = new User(email, password, userId);
+                    this.database.appendUserToExistingUserTree(user);
                 });
     }
 }

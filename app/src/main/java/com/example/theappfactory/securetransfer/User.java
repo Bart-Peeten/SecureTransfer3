@@ -10,26 +10,43 @@ public class User {
     private String email;
     private String userName;
     private int publicKey;
-    private int privateKey;
+    private Integer privateKey;
     private String password;
+    private String userId;
+    private int numberInInbox;
 
     //Constructors
     public User() {
     }
 
 
-    public User(String name, String firstName, String email, String userName, String password) {
-        this.name = name;
-        this.firstName = firstName;
+    public User(String name, String firstName, String email, String userName, String password, String userId) {
+        //this.name = name;
+        //this.firstName = firstName;
         this.email = email;
-        this.userName = userName;
+        //this.userName = userName;
         this.password = password;
+        this.userId = userId;
         setPrivateKey(1);
         setPublicKey(3);
+        numberInInbox = 0;
+    }
 
+    public User(String email, String password, String userId) {
+        this.email = email;
+        this.password = password;
+        this.userId = userId;
+        setPrivateKey(1);
+        setPublicKey(3);
+        numberInInbox = 0;
     }
 
     // Getter and Setters.
+
+    public String getUserId() { return userId; }
+
+    public void setUserId(String userId) { this.userId = userId; }
+
     public int getPublicKey() {
         return publicKey;
     }
@@ -38,7 +55,7 @@ public class User {
         this.publicKey = publicKey;
     }
 
-    public int getPrivateKey() {
+    public Integer getPrivateKey() {
         return privateKey;
     }
 

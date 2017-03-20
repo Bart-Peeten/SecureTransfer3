@@ -8,29 +8,31 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@android:color/white"
+    android:background="@android:color/holo_green_dark"
     tools:context="com.example.theappfactory.securetransfer.SendActivity">
 
     <Button
         android:text="Select File"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/selectbutton"
         android:onClick="selectButtonClick"
-        android:background="@android:color/darker_gray"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="74dp" />
 
     <Button
         android:text="Send File"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/sendbutton"
-        android:background="@android:color/darker_gray"
         android:textAlignment="center"
         android:textSize="14sp"
         android:onClick="sendButtonClick"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
         android:layout_below="@+id/selectbutton"
         android:layout_alignLeft="@+id/selectbutton"
         android:layout_alignStart="@+id/selectbutton"
@@ -38,13 +40,14 @@
 
     <Button
         android:text="Back"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button"
         android:layout_below="@+id/sendbutton"
         android:layout_alignLeft="@+id/sendbutton"
         android:layout_alignStart="@+id/sendbutton"
         android:layout_marginTop="50dp"
-        android:background="@android:color/darker_gray"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
         android:onClick="backToMenuButtonClick"/>
 </RelativeLayout>

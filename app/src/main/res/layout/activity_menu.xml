@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@android:color/white"
+    android:background="@android:color/holo_green_dark"
     tools:context="com.example.theappfactory.securetransfer.MenuActivity">
 
     <TextView
@@ -26,42 +26,48 @@
         android:textSize="24sp" />
 
     <Button
-        android:text="Send File"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/outboxbutton"
-        android:layout_alignStart="@+id/outboxbutton"
-        android:id="@+id/sendbutton"
-        android:onClick="sendFileButtonClick"/>
-
-    <Button
-        android:text="Inbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/inboxButton"
-        android:layout_below="@+id/menuTextView"
-        android:layout_alignLeft="@+id/sendbutton"
-        android:layout_alignStart="@+id/sendbutton" />
-
-    <Button
         android:text="Outbox"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/outboxbutton"
         android:onClick="outboxButtonClick"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
         android:layout_marginTop="31dp"
         android:layout_below="@+id/sendbutton"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:text="Logout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/outboxbutton"
         android:layout_alignRight="@+id/sendbutton"
         android:layout_alignEnd="@+id/sendbutton"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
         android:layout_marginTop="25dp"
         android:onClick="backButtonClick"
         android:id="@+id/backButton" />
+
+    <Button
+        android:text="Inbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/inboxButton"
+        android:layout_below="@+id/menuTextView"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Send File"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sendbutton"
+        android:onClick="sendFileButtonClick"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
