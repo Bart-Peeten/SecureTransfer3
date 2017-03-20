@@ -19,8 +19,8 @@ import Services.services.RSA.GenerateRSAKeys;
 
 public class MenuActivity extends AppCompatActivity {
     private FirebaseAuth auth;
-    private Button inboxButton;
-    private Database database;
+    private Button       inboxButton;
+    private Database     database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,5 +50,20 @@ public class MenuActivity extends AppCompatActivity {
         Intent loginIntent = new Intent(this, LoginActivity.class);
         auth.signOut();
         startActivity(loginIntent);
+    }
+
+    public void inboxButtonOnClick(View view){
+        /** When this button is clicked the files will be retrieved from the server.
+         * But since this is NOT in place yet we will work with hardcoded files which are
+         * encrypted by the send button from the SendActivity class.
+         *
+         * input:  None
+         * output: None
+         */
+
+        String desKeyFile =           "/storage/emulated/0/Android/data/DESKey.txt";
+        String encryptedMessageFile = "/storage/emulated/0/Android/data/Test_encrypted1.txt";
+        String encryptedDESKeyFile =  "/storage/emulated/0/Android/data/EncryptedDESKey.txt";;
+        String hashCodeFile =         "/storage/emulated/0/Android/data/HashCodeFile.txt";
     }
 }

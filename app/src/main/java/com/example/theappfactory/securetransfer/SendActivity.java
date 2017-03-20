@@ -31,8 +31,8 @@ public class SendActivity extends AppCompatActivity {
             // Path of source txt file is for the moment hard coded to see if it works in totaly.
             // When there is time I need to find out how to get the right path.
             // For the moment the method is giving the wrong path name.
-            DES des = new DES("/storage/emulated/0/Android/data/test_bart.txt");
-            des.send(getApplicationContext());
+            DES.init("/storage/emulated/0/Android/data/test_bart.txt");
+            DES.send(getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }

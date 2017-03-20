@@ -1,29 +1,32 @@
 package com.example.theappfactory.securetransfer;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
 
+/* Java Imports */
 import java.io.File;
-import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
+/* Own Imports */
+import Services.services.AES.AESDecryption;
 import Services.services.AES.AESEncryption;
+import Services.services.FileHandlers.FileHandler;
 import Services.services.FileHandlers.FileWriter;
+import Services.services.RSA.RSADecryption;
 import Services.services.SHA.SHA;
 
 import static Services.services.RSA.RSAEncryption.EncryptRSA;
-
-/* Java Imports */
-/* Own imports */
+import static java.security.AccessController.getContext;
 
 
 /**
@@ -38,15 +41,17 @@ import static Services.services.RSA.RSAEncryption.EncryptRSA;
 
 public class DES {
 
-    String line = "";
-    String fileInputPath = "";
-    File encryptedOutputFile;
-    private static Cipher ecipher;
+    private static String    fileInputPath = "";
+    private static File      encryptedOutputFile;
+    private static Cipher    ecipher;
     private static SecretKey key;
-    private String keyString;
+    private static String    keyString;
 
-    public DES(String filePath) throws IOException {
-        this.fileInputPath = filePath.substring(0, filePath.length() - 4);
+    public DES(){
+    }
+
+    public static void init(String filePath) {
+        fileInputPath       = filePath.substring(0, filePath.length() - 4);
         encryptedOutputFile = new File(fileInputPath + "_encrypted.txt");
 
         /** Below code for reading a file is temp. commented out because there is
@@ -70,8 +75,7 @@ public class DES {
         */
         try {
             // generate secret key using DES algorithm
-            key = KeyGenerator.getInstance("DES").generateKey();
-            System.out.println(key.getEncoded().length);
+            key     = KeyGenerator.getInstance("DES").generateKey();
             ecipher = Cipher.getInstance("DES");
 
             // initialize the ciphers with the given key
@@ -99,7 +103,7 @@ public class DES {
     }
 
     @SuppressLint("LongLogTag")
-    public void send(Context context){
+    public static void send(){
 
         //Get message Sender.
         String originalMessage = "Dit is een test voor Security Basic, voor het encrypteren met DES!!!!";
@@ -107,18 +111,18 @@ public class DES {
         //SHA message with AESKey
         String encryptedMessage = AESEncryption.encrypt(originalMessage,ecipher);
 
-        //Get string from secretkey and write it to a secretkey file.
+        //Save encrypted message to Test_encrypted1.txt
+        FileWriter.writeToFile(encryptedMessage.toString(), "/storage/emulated/0/Android/data/Test_encrypted1.txt");
+
+        //Get a string from secretkey and write it to a secretkey file.
         Log.d("///////DE DES KEY IS: ", Base64.encodeToString(key.getEncoded(), Base64.DEFAULT));
         keyString = Base64.encodeToString(key.getEncoded(), Base64.DEFAULT);
         FileWriter.writeToFile(keyString, "/storage/emulated/0/Android/data/DESKey.txt");
 
-        //Save encrypted message to Test_encrypted1.txt
-        FileWriter.writeToFile(encryptedMessage.toString(), "/storage/emulated/0/Android/data/Test_encrypted1.txt");
-
         //Get public key Receiver
         PublicKey publicKeyReceiver = UserObject.publicKey;
 
-        //SHA DESKey with RSA and public key Reciever and save to EncryptedDESKey.txt
+        //Encrypt DESKey with RSA and public key Reciever and save to EncryptedDESKey.txt
         byte[] encryptedAESKeyAsBytes = EncryptRSA(key.getEncoded(), publicKeyReceiver);
         FileWriter.writeToFile(byteToString(encryptedAESKeyAsBytes), "/storage/emulated/0/Android/data/EncryptedDESKey.txt");
         Log.d("/////////DE AES KEY IS: ", byteToString(encryptedAESKeyAsBytes));
@@ -139,27 +143,22 @@ public class DES {
     }
 
 
-    /*
-
-    public void AliceRead(Context context){
+    public void Read(){
         File file_1 = new File(getContext().getFilesDir(), getString(R.string.encryptedText_B));
         if (file_1.exists()) {
             //Get private key Alice
-            PrivateKey privateKeyAlice = ReadPrivateKey(getString(R.string.private_A));
+            PrivateKey privateKeySender = UserObject.privateKey;
 
             //Decrypt public key Bob
             byte[] encryptedAESKeyAsBytes = FileHandler.ReadBytesFromFile(getContext(), getString(R.string.encryptedAESKey_B));
-            byte[] decryptedAESKeyAsBytes = RSADecryption.DecryptRSA(encryptedAESKeyAsBytes, privateKeyAlice);
+            byte[] decryptedAESKeyAsBytes = RSADecryption.DecryptRSA(encryptedAESKeyAsBytes, privateKeySender);
 
             //Get aesKey Bob with public key Bob
-            SecretKeySpec aesKeyBob = new SecretKeySpec(decryptedAESKeyAsBytes, "AES");
+            SecretKeySpec aesKeyReceiver = new SecretKeySpec(decryptedAESKeyAsBytes, "AES");
 
             //Decrypt File_1 with aesKey Bob
             byte[] encryptedMessage = FileHandler.ReadBytesFromFile(getContext(), getString(R.string.encryptedText_B));
-            byte[] originalMessage = (AESDecryption.DecryptAES(encryptedMessage, aesKeyBob));
-
-            //Show decrypted message
-            //eTAlice.setText(new String(originalMessage));
+            byte[] originalMessage = (AESDecryption.DecryptAES(encryptedMessage, aesKeyReceiver));
 
             //bereken hash boodschap
             byte[] calculatedHash = GenerateHash.CreateHash(new String(originalMessage));
@@ -173,10 +172,10 @@ public class DES {
         }
     }
 
-    */
+
 
     @SuppressLint("LongLogTag")
-    private String byteToString(byte[] bytesData) {
+    private static String byteToString(byte[] bytesData) {
         /**
          * This method will convert a byte[] to a string.
          * input:  byte[]
@@ -189,38 +188,4 @@ public class DES {
 
         return decodedDataUsingUTF8;
     }
-
-    /*
-    public PublicKey ReadPublicKey(String fileName, Context context){
-        PublicKey key = null;
-
-        byte[] encryptedKeyAsBytes = FileHandler.ReadBytesFromFile(context, fileName);
-        try{
-            X509EncodedKeySpec spec = new X509EncodedKeySpec(encryptedKeyAsBytes);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            key = keyFactory.generatePublic(spec);
-        }catch (Exception e){
-            Log.d("", e.getMessage());
-        }
-        return key;
-    }
-
-
-    private PrivateKey ReadPrivateKey(String fileName, Context context){
-        PrivateKey key = null;
-        byte[] encryptedKeyAsBytes = FileHandler.ReadBytesFromFile(context, fileName);
-
-        try{
-            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(encryptedKeyAsBytes);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            key = keyFactory.generatePrivate(spec);
-        }catch (Exception e){
-            Log.d("", e.getMessage());
-        }
-        return key;
-    }
-    */
-
-
-
 }

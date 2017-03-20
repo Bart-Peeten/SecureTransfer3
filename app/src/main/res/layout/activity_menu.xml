@@ -58,7 +58,8 @@
         android:layout_below="@+id/menuTextView"
         android:background="@android:color/black"
         android:textColor="@android:color/white"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="inboxButtonOnClick"/>
 
     <Button
         android:text="Send File"
