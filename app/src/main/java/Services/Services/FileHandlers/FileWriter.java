@@ -1,7 +1,6 @@
 package Services.services.FileHandlers;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.util.Log;
 
 import java.io.File;
@@ -39,9 +38,10 @@ public class FileWriter {
         }
     }
 
-    public static void writeBytesToFile(Context context, String fileName, byte[] text ){
+    public static void writeBytesToFile(String fileName, byte[] text ){
         try{
-            FileOutputStream outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            FileOutputStream outputStream = new FileOutputStream(fileName);
+            //FileOutputStream outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             outputStream.write(text);
             outputStream.close();
         } catch (Exception e){

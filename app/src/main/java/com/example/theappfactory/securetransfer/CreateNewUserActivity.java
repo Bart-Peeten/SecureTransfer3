@@ -11,13 +11,22 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+
+import Services.services.KeyHandlers.GenerateKeys;
+import Services.services.KeyHandlers.GenerateRSAKeyPairKeys;
+
 
 public class CreateNewUserActivity extends AppCompatActivity {
-    private EditText signupEmailText;
-    private EditText sigupPaswordText;
-    private FirebaseAuth auth;
-    private Database database;
-    private User user;
+    private EditText               signupEmailText;
+    private EditText               sigupPaswordText;
+    private FirebaseAuth           auth;
+    private Database               database;
+    private User                   user;
+    private GenerateRSAKeyPairKeys gkSender;
+    private GenerateRSAKeyPairKeys gkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,5 +85,58 @@ public class CreateNewUserActivity extends AppCompatActivity {
                     this.user = new User(email, password, userId);
                     this.database.appendUserToExistingUserTree(user);
                 });
+
+        GenerateKeys gk_Alice;
+        GenerateKeys gk_Bob;
+
+        try {
+            gk_Alice = new GenerateKeys(1024);
+            gk_Alice.createKeys();
+            gk_Alice.writeToFile("storage/emulated/0/Android/data/publicKey_Alice.txt", gk_Alice.getPublicKey().getEncoded());
+            gk_Alice.writeToFile("storage/emulated/0/Android/data/privateKey_Alice.txt", gk_Alice.getPrivateKey().getEncoded());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            gk_Bob = new GenerateKeys(1024);
+            gk_Bob.createKeys();
+            gk_Bob.writeToFile("storage/emulated/0/Android/data/publicKey_Bob.txt", gk_Bob.getPublicKey().getEncoded());
+            gk_Bob.writeToFile("storage/emulated/0/Android/data/privateKey_Bob.txt", gk_Bob.getPrivateKey().getEncoded());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*
+
+
+        gkSender = new GenerateRSAKeyPairKeys();
+        gkReceiver = new GenerateRSAKeyPairKeys();
+
+        gkSender.createRSAKeys();
+        gkReceiver.createRSAKeys();
+
+        // Schrijf de public en private key van de SENDER naar text file.
+        FileWriter.writeBytesToFile("/storage/emulated/0/Android/data/publicKey_sender.txt",
+                gkSender.getPublicKey().getEncoded());
+        FileWriter.writeBytesToFile("/storage/emulated/0/Android/data/privateKey_sender.txt",
+                gkSender.getPrivateKey().getEncoded());
+
+        // Schrijf de public en private key van de RECEIVER naar txt file.
+        FileWriter.writeBytesToFile("/storage/emulated/0/Android/data/publicKey_receiver.txt",
+                gkReceiver.getPublicKey().getEncoded());
+        FileWriter.writeBytesToFile("/storage/emulated/0/Android/data/privateKey_receiver.txt",
+                gkReceiver.getPrivateKey().getEncoded());
+
+                */
     }
 }
