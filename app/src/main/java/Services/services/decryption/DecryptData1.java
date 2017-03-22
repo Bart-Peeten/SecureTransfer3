@@ -4,6 +4,8 @@ package Services.services.decryption;
  * Created by peetenbart on 22-03-17.
  */
 
+import com.example.theappfactory.securetransfer.MenuActivity;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -44,6 +46,7 @@ public class DecryptData1 {
         System.out.println("\n\n\n" + new String(toWrite, "UTF-8") + "\n\n\n");
         fos.flush();
         fos.close();
+        MenuActivity.sneakPreviewFileTextView.setText(new String(toWrite, "UTF-8"));
         System.out.println("The file was successfully decrypted. You can view it in: " + output.getPath());
 
     }

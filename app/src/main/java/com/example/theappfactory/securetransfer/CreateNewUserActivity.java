@@ -16,7 +16,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
 import Services.services.KeyHandlers.GenerateKeys;
-import Services.services.KeyHandlers.GenerateRSAKeyPairKeys;
 
 
 public class CreateNewUserActivity extends AppCompatActivity {
@@ -25,8 +24,6 @@ public class CreateNewUserActivity extends AppCompatActivity {
     private FirebaseAuth           auth;
     private Database               database;
     private User                   user;
-    private GenerateRSAKeyPairKeys gkSender;
-    private GenerateRSAKeyPairKeys gkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,28 +112,5 @@ public class CreateNewUserActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        /*
-
-
-        gkSender = new GenerateRSAKeyPairKeys();
-        gkReceiver = new GenerateRSAKeyPairKeys();
-
-        gkSender.createRSAKeys();
-        gkReceiver.createRSAKeys();
-
-        // Schrijf de public en private key van de SENDER naar text file.
-        FileWriter.writeBytesToFile("/storage/emulated/0/Android/data/publicKey_sender.txt",
-                gkSender.getPublicKey().getEncoded());
-        FileWriter.writeBytesToFile("/storage/emulated/0/Android/data/privateKey_sender.txt",
-                gkSender.getPrivateKey().getEncoded());
-
-        // Schrijf de public en private key van de RECEIVER naar txt file.
-        FileWriter.writeBytesToFile("/storage/emulated/0/Android/data/publicKey_receiver.txt",
-                gkReceiver.getPublicKey().getEncoded());
-        FileWriter.writeBytesToFile("/storage/emulated/0/Android/data/privateKey_receiver.txt",
-                gkReceiver.getPrivateKey().getEncoded());
-
-                */
     }
 }

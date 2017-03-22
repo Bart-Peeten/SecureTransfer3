@@ -5,13 +5,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
+import java.security.PublicKey;
 
+import Services.services.FileHandlers.FileReader1;
+import Services.services.SHA.GenerateHash;
 import Services.services.decryption.DecryptData1;
 import Services.services.decryption.DecryptKey1;
+import Services.services.decryption.RSADecryption;
 import Services.services.decryption.StartDecryption1;
 
 /* FireBase imports */
@@ -26,6 +31,7 @@ public class MenuActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private Button       inboxButton;
     private Database     database;
+    public static TextView     sneakPreviewFileTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         Button outboxButton = (Button)findViewById(R.id.outboxbutton);
         outboxButton.setEnabled(false);
+        sneakPreviewFileTextView = (TextView)findViewById(R.id.textViewSneakPreview);
 
         auth = FirebaseAuth.getInstance();
         database = new Database();
@@ -64,8 +71,27 @@ public class MenuActivity extends AppCompatActivity {
          */
 
         decrypt1();
+        calculateHash();
+
 
     }
+
+    private void calculateHash() {
+        //bereken hash boodschap
+        byte[] calculatedHash = GenerateHash.CreateHash(new String("/storage/emulated/0/Android/data/decryptedFile.txt"));
+
+        //decrypteer file3 met publicB
+        StartDecryption1 startDec1 = new StartDecryption1();
+        PublicKey publicKey_B = null;
+        try {
+            publicKey_B = startDec1.getPublic("/storage/emulated/0/Android/data/publicKey_Alice.txt", "RSA");
+            byte[] encryptedHashFromFile = FileReader1.ReadBytesFromFile("/storage/emulated/0/Android/data/HashEncrypted.txt");
+            byte[] decryptedHashFromFile = RSADecryption.DecryptRSA(encryptedHashFromFile, publicKey_B);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void decrypt1(){
         StartDecryption1 startEnc = new StartDecryption1();

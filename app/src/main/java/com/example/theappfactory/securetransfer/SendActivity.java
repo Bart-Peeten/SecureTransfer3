@@ -10,9 +10,12 @@ import android.view.View;
 
 import java.io.File;
 
+import Services.services.FileHandlers.FileWriter;
 import Services.services.KeyHandlers.GenerateSymmetricKey;
+import Services.services.SHA.GenerateHash;
 import Services.services.encryption.EncryptData1;
 import Services.services.encryption.EncryptKey1;
+import Services.services.encryption.RSAEncryption;
 import Services.services.encryption.StartEncryption1;
 
 public class SendActivity extends AppCompatActivity {
@@ -44,16 +47,23 @@ public class SendActivity extends AppCompatActivity {
             genSK.writeToFile("/storage/emulated/0/Android/data/secretKey.txt", genSK.getKey().getEncoded());
 
             encrypt1();
+            calculateHash();
 
-            // Path of source txt file is for the moment hard coded to see if it works in totaly.
-            // When there is time I need to find out how to get the right path.
-            // For the moment the method is giving the wrong path name.
 
-            //DES.init("/storage/emulated/0/Android/data/test_bart.txt");
-            //DES.send();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void calculateHash() throws Exception {
+        //Hash original message
+        byte[] originalHash = GenerateHash.CreateHash("storage/emulated/0/Android/data/test_bart.txt");
+
+        //Encrypt hash with private key Alice and save to File_3
+        StartEncryption1 startEnc1 = new StartEncryption1();
+        byte[] encryptedHash = RSAEncryption.EncryptRSA(originalHash,
+                startEnc1.getPrivate("/storage/emulated/0/Android/data/privateKey_Alice.txt", "RSA"));
+        FileWriter.writeBytesToFile("/storage/emulated/0/Android/data/HashEncrypted.txt", encryptedHash);
     }
 
     private void encrypt1() throws Exception {
@@ -69,32 +79,6 @@ public class SendActivity extends AppCompatActivity {
         new EncryptData1(originalFile, encryptedFile,
                 startEnc.getSecretKey("/storage/emulated/0/Android/data/secretKey.txt", "AES"), "AES");
     }
-
-    /*
-    private void Encrypt() throws IOException, GeneralSecurityException {
-        GenerateAESKey generateAESKey = new GenerateAESKey();
-        FileWriter.writeBytesToFile("/storage/emulated/0/Android/data/secretDESKey.txt",
-                generateAESKey.GetAESKey().getEncoded());
-
-        StartEncryption startEncryption = new StartEncryption();
-        File originalKeyFile = new File("/storage/emulated/0/Android/data/secretDESKey.txt");
-        File encryptedKeyFile = new File("/storage/emulated/0/Android/data/encryptedDESKey.txt");
-
-        new EncryptKey(FileReader.readPublicKey("/storage/emulated/0/Android/data/publicKey_receiver.txt"),
-                originalKeyFile,
-                encryptedKeyFile,
-                "RSA");
-
-        File originalFile = new File("/storage/emulated/0/Android/data/test_bart.txt");
-        System.out.println("/////DES KEY IS: " + generateAESKey.GetAESKey());
-        System.out.println("/////DES Key IS: " + generateAESKey.GetAESKey().getEncoded());
-        File encryptedFile = new File("/storage/emulated/0/Android/data/test_bartEncrypted.txt");
-        new EncryptData(originalFile,
-                encryptedFile,
-                generateAESKey.GetAESKey(),
-                "AES");
-    }
-    */
 
 
     public void backToMenuButtonClick(View view){
